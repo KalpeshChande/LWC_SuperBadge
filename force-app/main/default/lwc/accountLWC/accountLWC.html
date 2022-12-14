@@ -1,0 +1,120 @@
+<template>
+    <lightning-card title="Create Contact" icon-name="standard:contact">
+
+        <div class="slds-box">     
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_6-of-12">
+                    <lightning-input type="text" label="Name" onchange={handleNumberChange} placeholder="Enter Enter Name"  value={Name} required="true" variant="label-inline"></lightning-input>     
+                </div>
+                <div class="slds-col slds-size_6-of-12">
+                    <lightning-input type="tel" label="Phone" onchange={handleNameChange} placeholder="Enter Phone Number" value={Phone} variant="label-inline" ></lightning-input>
+                </div>
+            </div>   
+            
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_6-of-12">
+                    <lightning-input type="date" label="Birthdate" onchange={handleDateChange} placeholder="Enter Date" value={Birthdate} variant="label-inline" ></lightning-input>
+                </div>
+                <div class="slds-col slds-size_6-of-12">
+                    <lightning-combobox
+                    name="LeadSource"
+                    label="LeadSource"
+                    value={LeadSource}
+                    onchange={handleStageChange}
+                    options={leadSourcePic}></lightning-combobox>
+                </div>
+            </div>   
+           
+            <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_5-of-12"></div>
+            <template if:true={showSubmitButton}>
+                <lightning-button label="SUBMIT" variant="brand" onclick={createCar}  ></lightning-button>  
+          </template>
+                <div class="slds-col slds-size_5-of-12"></div>
+                <template if:true={showEditButton}>
+                    <lightning-button label="SUBMIT" variant="brand" onclick={createCar}  ></lightning-button>  
+              </template>
+                    </div> </div>
+
+    </lightning-card>
+    <!-- <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <template if:false={showSpinner}> -->
+        <lightning-card>
+            <div class="slds-text-heading_large" slot="title">
+                <lightning-icon icon-name="standard:contact" title="Contact Record"></lightning-icon>
+                <strong class="slds-m-left_x-small">Clients</strong>
+            </div>
+            <div slot="actions"> 
+                <lightning-input value={clientFilterQuery} onchange={handleFilter} 
+                class="slds-m-bottom_small" type='search' placeholder="Search Client"></lightning-input>
+            </div>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered" >
+                <thead>
+                    <tr class="">
+                        <th class="" scope="col">
+                            <div class="slds-truncate">
+                                <span onclick={handleSort} if:true={isAsc}>Name &#8595;</span>
+                                <span onclick={handleSort} if:false={isAsc}>Name &#8593;</span>
+                            </div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate">Phone</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate">BirthDate</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate">Email</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={dataToDisplay} for:item="cli">
+                        <tr key={cli.Id} class="slds-hint-parent">
+                            <th data-label="Contact Data" scope="row">
+                                <div class="slds-truncate" title="Name">
+                                    <a href="#" data-cli={cli.Id} tabindex="-1">{cli.Name}</a>
+                                </div>
+                            </th>
+                            <td data-label="Phone">
+                                <div class="slds-truncate" title="Name">{cli.Phone}</div>
+                            </td>
+                            <td data-label="BirthDate">
+                                <div class="slds-truncate" title="BirthDate">{cli.BirthDate}</div>
+                            </td>
+                            <td data-label="LeadSource">
+                                <div class="slds-truncate" title="Prospecting">{cli.LeadSource}</div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <div slot="footer" class="slds-align_absolute-center">
+                <p class='slds-m-right_small'>Showing {pageParam} of {totalRecords} rows</p>
+                <lightning-button label="&#9668;&#9668;" class='slds-m-right_small slds-p-left_small slds-border_left' disabled={isFirst} onclick={handleFirst}></lightning-button>
+                <lightning-button label="&#9668;" class='slds-m-right_small' disabled={isFirst} onclick={handlePrev}></lightning-button>
+                <lightning-combobox
+                name="progress"
+                label="Page"
+                class='slds-m-right_small'
+                value={selectedPage}
+                options={pages}
+                onchange={handlePageChange}
+                variant='label-hidden'>
+            </lightning-combobox>            
+                <lightning-button label="&#9654;" class='slds-m-right_small' disabled={isLast} onclick={handleNext}></lightning-button>
+                <lightning-button label="&#9654;&#9654;" class='slds-p-right_small slds-m-right_small slds-border_right' disabled={isLast} onclick={handleLast}></lightning-button>
+                <lightning-combobox
+                name="progress"
+                label="Record to Display"
+                class='slds-m-right_small slds-float_right'
+                value={pageLimit}
+                placeholder="Limit"
+                options={pageLimitOptions}
+                onchange={handleLimitChange}
+                variant='label-hidden'></lightning-combobox>
+            </div>
+        </lightning-card>
+    </template>
